@@ -11,3 +11,7 @@ wheels/
 
 # enviroment variables
 .env
+
+# ADK local session state
+.adk/
+*.db
