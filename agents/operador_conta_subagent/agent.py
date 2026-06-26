@@ -1,6 +1,7 @@
 from google.adk import Agent
 from google.adk.tools.function_tool import FunctionTool
 from google.adk.tools.tool_context import ToolContext
+from google.adk.tools.agent_tool import AgentTool
 
 FATURAS = [
     {
@@ -151,6 +152,7 @@ consultor_assinatura_subagent = Agent(
             - Informar o plano, status e renovação da assinatura de um cliente.
             - Cancelar a assinatura ativa de um cliente, se solicitado.
     """,
+    mode="task",
     model="gemini-3.1-flash-lite",
     tools=[
         consultar_assinatura,
@@ -167,7 +169,8 @@ consultor_fatura_subagent = Agent(
         Você é responsável por:
             - Listar as faturas de um cliente específico.
     """,
-    mode="single_turn",
+    # mode="single_turn", # Transparente na sessão, retorna pro chamador
+    mode="task", # Transparente na sessão
     model="gemini-3.1-flash-lite",
     tools=[
         listar_faturas
@@ -189,5 +192,6 @@ root_agent = Agent(
     sub_agents=[
         consultor_fatura_subagent,
         consultor_assinatura_subagent
-    ]
+    ],
+    # tools=[AgentTool(consultor_fatura_subagent)]
 )
